@@ -1,7 +1,6 @@
 Role Name
 =========
-
-A brief description of the role goes here.
+Post_Patch - Post-patch tasks to be run after patching a RHEL O/S image.
 
 Requirements
 ------------
