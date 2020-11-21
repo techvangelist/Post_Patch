@@ -1,0 +1,32 @@
+**********************************************************
+PATCH REPORT FOR {{ inventory_hostname }}
+DATE: {{ ansible_date_time.date }}
+TIME: {{ ansible_date_time.time }}
+----------------------------------------------------------
+{# Determine boot message #}
+{% if booted == "yes" %}
+  {% set boot_message = "The system rebooted!" %}
+  {% set boot_message2 = "" %}
+{% else %}
+  {% set boot_message = "The system did NOT boot!" %}
+  {% set boot_message2 = "Either no reboot was required OR their was an issue." %}
+{% endif %}
+
+Vendor:                 {{ ansible_system_vendor }}
+Server Type:            {{ ansible_product_name }}
+BIOS Version:           {{ ansible_bios_version }}
+O/S Distribution:       {{ ansible_distribution }}
+Previous Dist rev:      {{ pre_patch_dist | to_nice_json }}
+Upgraded Dist rev:      {{ ansible_distribution_version }}
+Previous Kernel rev:    {{ pre_patch_kern|to_nice_json }}
+Upgraded Kernel rev:    {{ ansible_kernel }}
+Python Version:         {{ ansible_python_version }}
+PrePatch Uptime:        {{ pre_uptime.stdout|to_nice_json }}
+PostPatch Uptime:       {{ post_uptime.stdout|to_nice_json }}
+
+{{ boot_message }}
+{{ boot_message2 }}
+System took {{ elapsed_boot_time }} seconds to reboot.
+----------------------------------------------------------
+******** END REPORT FOR {{ inventory_hostname }} *********
+

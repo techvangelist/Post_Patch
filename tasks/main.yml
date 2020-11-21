@@ -1,0 +1,25 @@
+---
+- name: Check Uptime After Patching
+  shell: uptime
+  register: post_uptime
+
+- name: Enable Repositories
+  shell: "yum-config-manager --enable {{item}}"
+  loop:
+    "{{ repo_list.stdout_lines}}"
+  args:
+    executable: /bin/bash
+    warn: no
+  notify: yum-clean-metadata
+
+- name: Create Report
+  template:
+    src: patch_report.j2
+    dest: "/tmp/{{inventory_hostname}}_patch_report.txt"
+
+- name: Fetch report from remote host
+  fetch:
+    src: "/tmp/{{inventory_hostname}}_patch_report.txt"
+    dest: data/reports/
+    flat: yes
+
